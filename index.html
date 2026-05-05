@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Neuronal de Psicología Social e Influencia Social</title>
+    <style>
+        :root {
+            --bg: #0a0c14;
+            --surface: #111827;
+            --surface2: #1a1f2e;
+            --text: #d1d5db;
+            --text-bright: #f3f4f6;
+            --text-dim: #9ca3af;
+            --accent-red: #e0524b;
+            --accent-amber: #e8973a;
+            --accent-blue: #4b9cd3;
+            --accent-green: #3da87a;
+            --accent-violet: #8b6fcf;
+            --accent-cyan: #3ba7bf;
+            --accent-gold: #c9a84c;
+            --accent-rose: #c75b7a;
+            --glow-red: rgba(224, 82, 75, 0.6);
+            --glow-amber: rgba(232, 151, 58, 0.6);
+            --glow-blue: rgba(75, 156, 211, 0.6);
+            --glow-green: rgba(61, 168, 122, 0.6);
+            --glow-violet: rgba(139, 111, 207, 0.6);
+            --glow-cyan: rgba(59, 167, 191, 0.6);
+            --glow-gold: rgba(201, 168, 76, 0.6);
+            --glow-rose: rgba(199, 91, 122, 0.6);
+            --transition-speed: 0.5s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Header / Toolbar */
+        .toolbar {
+            background: var(--surface);
+            border-bottom: 1px solid #1e293b;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            z-index: 100;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+            min-height: 56px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
+        }
+        .toolbar .logo {
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .toolbar .logo .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--glow-cyan);
+            animation: logoPulse 2s ease-in-out infinite;
+        }
+        @keyframes logoPulse {
+            0%,
+            100% {
+                box-shadow: 0 0 8px var(--glow-cyan);
+            }
+            50% {
+                box-shadow: 0 0 20px var(--glow-cyan), 0 0 35px rgba(59, 167, 191, 0.3);
+            }
+        }
+        .toolbar label {
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            letter-spacing: 0.03em;
+            white-space: nowrap;
+            font-weight: 500;
+            margin-left: 4px;
+        }
+        .toolbar select {
+            background: var(--surface2);
+            color: var(--text-bright);
+            border: 1px solid #2d3748;
+            padding: 9px 14px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            cursor: pointer;
+            letter-spacing: 0.02em;
+            transition: all 0.25s;
+            min-width: 200px;
+            font-family: inherit;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%239ca3af' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+        }
+        .toolbar select:hover {
+            border-color: #4b5563;
+            box-shadow: 0 0 12px rgba(75, 156, 211, 0.2);
+        }
+        .toolbar select:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 16px rgba(75, 156, 211, 0.35);
+        }
+        .toolbar .btn {
+            background: var(--surface2);
+            color: var(--text-bright);
+            border: 1px solid #2d3748;
+            padding: 9px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            letter-spacing: 0.03em;
+            transition: all 0.25s;
+            white-space: nowrap;
+            font-family: inherit;
+            font-weight: 500;
+        }
+        .toolbar .btn:hover {
+            border-color: #6b7280;
+            box-shadow: 0 0 14px rgba(139, 111, 207, 0.25);
+            background: #1e2638;
+        }
+        .toolbar .btn.reset-btn {
+            border-color: #4a3f5e;
+            color: #c4b5e0;
+        }
+        .toolbar .btn.reset-btn:hover {
+            border-color: #8b6fcf;
+            box-shadow: 0 0 18px rgba(139, 111, 207, 0.4);
+        }
+        .toolbar .legend-mini {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-left: auto;
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            align-items: center;
+        }
+        .legend-mini span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+        .legend-mini .dot-mini {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* SVG Canvas */
+        .canvas-container {
+            flex: 1;
+            position: relative;
+            cursor: grab;
+            overflow: hidden;
+            background: radial-gradient(ellipse at center, #111827 0%, #080c16 70%);
+        }
+        .canvas-container:active {
+            cursor: grabbing;
+        }
+        .canvas-container.panning {
+            cursor: grabbing;
+        }
+        .canvas-container svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Grid pattern overlay */
+        .canvas-container::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.06;
+            background-image: radial-gradient(circle, #4b9cd3 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* Side Panel */
+        .side-panel {
+            width: 340px;
+            background: var(--surface);
+            border-left: 1px solid #1e293b;
+            padding: 20px;
+            overflow-y: auto;
+            z-index: 50;
+            flex-shrink: 0;
+            transition: transform 0.35s ease, opacity 0.35s ease;
+            box-shadow: -4px 0 30px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .side-panel.hidden {
+            transform: translateX(100%);
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+        .side-panel h3 {
+            font-size: 1rem;
+            color: var(--accent-cyan);
+            letter-spacing: 0.04em;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-bottom: 2px solid #1e3a4a;
+            padding-bottom: 10px;
+        }
+        .side-panel .info-block {
+            background: var(--surface2);
+            border-radius: 10px;
+            padding: 14px 16px;
+            border: 1px solid #252d3d;
+        }
+        .side-panel .info-block h4 {
+            font-size: 0.85rem;
+            color: var(--text-bright);
+            margin-bottom: 6px;
+            letter-spacing: 0.02em;
+        }
+        .side-panel .info-block p {
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+        .side-panel .info-block .category-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            margin-top: 6px;
+        }
+        .tag-red {
+            background: #3b1a1a;
+            color: #e0524b;
+        }
+        .tag-amber {
+            background: #3b2a15;
+            color: #e8973a;
+        }
+        .tag-blue {
+            background: #152838;
+            color: #4b9cd3;
+        }
+        .tag-green {
+            background: #1a3328;
+            color: #3da87a;
+        }
+        .tag-violet {
+            background: #2a1f3d;
+            color: #8b6fcf;
+        }
+        .tag-cyan {
+            background: #152b30;
+            color: #3ba7bf;
+        }
+        .tag-gold {
+            background: #2e2818;
+            color: #c9a84c;
+        }
+        .tag-rose {
+            background: #331a24;
+            color: #c75b7a;
+        }
+        .side-panel .connection-list {
+            list-style: none;
+            padding: 0;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+        }
+        .side-panel .connection-list li {
+            padding: 4px 0;
+            border-bottom: 1px solid #1a2030;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .side-panel .connection-list li::before {
+            content: '↗';
+            color: #4b9cd3;
+            font-size: 0.7rem;
+        }
+        .side-panel .empty-state {
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            padding: 30px 10px;
+            opacity: 0.7;
+            font-style: italic;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            pointer-events: none;
+            z-index: 200;
+            background: var(--surface2);
+            border: 1px solid #3d4a5c;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 0.78rem;
+            color: var(--text-bright);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            transition: opacity 0.2s;
+            max-width: 260px;
+            letter-spacing: 0.02em;
+        }
+        .tooltip.visible {
+            opacity: 1;
+        }
+        .tooltip .tt-name {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #f3f4f6;
+            margin-bottom: 3px;
+        }
+        .tooltip .tt-cat {
+            font-size: 0.68rem;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* SVG node styles - handled via JS but base here */
+        .node-group {
+            cursor: pointer;
+            transition: opacity var(--transition-speed) ease;
+        }
+        .node-group.dimmed {
+            opacity: 0.2;
+        }
+        .node-group.partial {
+            opacity: 0.55;
+        }
+        .node-group.active {
+            opacity: 1;
+        }
+        .edge-line {
+            transition: opacity var(--transition-speed) ease, stroke-width var(--transition-speed) ease,
+                stroke var(--transition-speed) ease;
+        }
+        .edge-line.dimmed {
+            opacity: 0.08;
+        }
+        .edge-line.partial {
+            opacity: 0.3;
+        }
+        .edge-line.active {
+            opacity: 0.85;
+            stroke-width: 2.5;
+        }
+
+        /* Pulse animation for active nodes */
+        @keyframes nodePulse {
+            0%,
+            100% {
+                r: var(--base-r);
+            }
+            50% {
+                r: calc(var(--base-r) + 4px);
+            }
+        }
+        @keyframes glowPulse {
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+        .pulse-ring {
+            animation: glowPulse 1.8s ease-in-out infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .side-panel {
+                width: 280px;
+                font-size: 0.75rem;
+            }
+            .toolbar {
+                padding: 8px 12px;
+                gap: 8px;
+            }
+            .toolbar select {
+                min-width: 140px;
+                font-size: 0.72rem;
+                padding: 7px 10px;
+                padding-right: 28px;
+            }
+            .toolbar .btn {
+                padding: 7px 10px;
+                font-size: 0.7rem;
+            }
+            .legend-mini {
+                font-size: 0.62rem;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <div class="logo">
+            <span class="dot"></span> NeuroSocial
+        </div>
+        <label for="phenomenon-select">Fenómeno:</label>
+        <select id="phenomenon-select">
+            <option value="all">— Todos los nodos —</option>
+            <option value="comunicacion_social">Comunicación social</option>
+            <option value="influencia_social">Influencia social</option>
+            <option value="persuasion">Persuasión</option>
+            <option value="conformidad">Conformidad</option>
+            <option value="obediencia">Obediencia</option>
+            <option value="identidad_social">Identidad social</option>
+            <option value="dinamica_grupos">Dinámica de grupos</option>
+            <option value="rumores">Rumores</option>
+            <option value="representaciones_sociales">Representaciones sociales</option>
+            <option value="interaccion_simbolica">Procesos de interacción simbólica</option>
+        </select>
+        <button class="btn reset-btn" id="reset-btn" title="Restablecer vista y selección">↺ Reset red</button>
+        <div class="legend-mini">
+            <span><span class="dot-mini" style="background:#e0524b;"></span> Influencia</span>
+            <span><span class="dot-mini" style="background:#4b9cd3;"></span> Comunicación</span>
+            <span><span class="dot-mini" style="background:#3da87a;"></span> Identidad</span>
+            <span><span class="dot-mini" style="background:#8b6fcf;"></span> Filosofía</span>
+            <span><span class="dot-mini" style="background:#c9a84c;"></span> Núcleo</span>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="main-container">
+        <!-- Canvas -->
+        <div class="canvas-container" id="canvas-container">
+            <svg id="main-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+        </div>
+
+        <!-- Side Panel -->
+        <div class="side-panel" id="side-panel">
+            <h3>🔬 Panel de exploración</h3>
+            <div id="panel-content">
+                <div class="empty-state">
+                    Haz clic en un nodo para ver su definición y conexiones.<br><br>
+                    O selecciona un fenómeno en el menú superior para ver la activación de la red.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tooltip -->
+    <div class="tooltip" id="tooltip">
+        <div class="tt-name"></div>
+        <div class="tt-cat"></div>
+    </div>
+
+    <script>
+        (function() {
+            // ==================== DATA: NODES ====================
+            const nodes = [
+                // NÚCLEO TEÓRICO
+                { id: 'psicologia_social', name: 'Psicología social', author: 'Moscovici', type: 'teoria',
+                    category: 'nucleo', color: '#c9a84c', glow: 'rgba(201,168,76,0.7)', r: 22, definition: 'Estudio científico de cómo los pensamientos, sentimientos y comportamientos de las personas son influidos por la presencia real, imaginada o implícita de otros.',
+                    relatedAuthors: ['Moscovici', 'Allport', 'Lewin'] },
+
+                // PROCESOS COGNITIVO-SOCIALES
+                { id: 'disonancia_cognitiva', name: 'Disonancia cognitiva', author: 'Festinger', type: 'concepto',
+                    category: 'cognitivo', color: '#e8973a', glow: 'rgba(232,151,58,0.65)', r: 16,
+                    definition: 'Tensión interna que surge cuando una persona mantiene dos cogniciones contradictorias, motivando un cambio para reducir la inconsistencia.',
+                    relatedAuthors: ['Festinger'] },
+                { id: 'rutas_persuasion', name: 'Rutas de persuasión', author: 'Cacioppo y Petty', type: 'concepto',
+                    category: 'cognitivo', color: '#e8973a', glow: 'rgba(232,151,58,0.65)', r: 15,
+                    definition: 'Modelo de probabilidad de elaboración: ruta central (análisis profundo) y ruta periférica (señales superficiales) en la persuasión.',
+                    relatedAuthors: ['Cacioppo', 'Petty'] },
+                { id: 'persuasion_concepto', name: 'Persuasión', author: 'Cacioppo y Petty', type: 'concepto',
+                    category: 'cognitivo', color: '#e8973a', glow: 'rgba(232,151,58,0.65)', r: 14,
+                    definition: 'Proceso de cambio de actitudes mediante la comunicación de argumentos e información.',
+                    relatedAuthors: ['Cacioppo', 'Petty', 'Festinger'] },
+
+                // INFLUENCIA SOCIAL
+                { id: 'asch', name: 'Solomon Asch', author: 'Asch', type: 'autor', category: 'influencia',
+                    color: '#e0524b', glow: 'rgba(224,82,75,0.65)', r: 11,
+                    definition: 'Psicólogo pionero en el estudio de la conformidad. Su experimento clásico mostró cómo las personas ceden ante la presión grupal incluso frente a evidencia clara.',
+                    relatedAuthors: ['Sherif', 'Milgram'] },
+                { id: 'milgram', name: 'Stanley Milgram', author: 'Milgram', type: 'autor', category: 'influencia',
+                    color: '#e0524b', glow: 'rgba(224,82,75,0.65)', r: 11,
+                    definition: 'Conocido por el experimento de obediencia a la autoridad, donde participantes administraban descargas eléctricas bajo órdenes de una figura de autoridad.',
+                    relatedAuthors: ['Asch', 'French y Raven'] },
+                { id: 'sherif', name: 'Muzafer Sherif', author: 'Sherif', type: 'autor', category: 'influencia',
+                    color: '#e0524b', glow: 'rgba(224,82,75,0.65)', r: 11,
+                    definition: 'Estudió la formación de normas sociales mediante el efecto autocinético, mostrando cómo las normas grupales emergen y se interiorizan.',
+                    relatedAuthors: ['Asch', 'Tajfel'] },
+                { id: 'influencia_minoritaria', name: 'Influencia minoritaria', author: 'Moscovici', type: 'concepto',
+                    category: 'influencia', color: '#e0524b', glow: 'rgba(224,82,75,0.65)', r: 13,
+                    definition: 'Proceso por el cual una minoría consistente puede influir en la mayoría, generando cambio social e innovación.',
+                    relatedAuthors: ['Moscovici'] },
+                { id: 'conformidad', name: 'Conformidad', author: 'Asch / Sherif', type: 'concepto',
+                    category: 'influencia', color: '#e0524b', glow: 'rgba(224,82,75,0.65)', r: 14,
+                    definition: 'Cambio en el comportamiento u opinión de una persona como resultado de la presión real o imaginada de un grupo.',
+                    relatedAuthors: ['Asch', 'Sherif'] },
+                { id: 'obediencia', name: 'Obediencia', author: 'Milgram', type: 'concepto', category: 'influencia',
+                    color: '#e0524b', glow: 'rgba(224,82,75,0.65)', r: 14,
+                    definition: 'Acto de cumplir órdenes de una figura de autoridad, incluso cuando entran en conflicto con la conciencia personal.',
+                    relatedAuthors: ['Milgram', 'French y Raven'] },
+                { id: 'normas_sociales', name: 'Normas sociales', author: 'Sherif', type: 'concepto',
+                    category: 'influencia', color: '#e0524b', glow: 'rgba(224,82,75,0.65)', r: 12,
+                    definition: 'Reglas implícitas o explícitas que guían el comportamiento aceptable dentro de un grupo o sociedad.',
+                    relatedAuthors: ['Sherif', 'Asch'] },
+
+                // COMUNICACIÓN
+                { id: 'bavelas', name: 'Alex Bavelas', author: 'Bavelas', type: 'autor', category: 'comunicacion',
+                    color: '#4b9cd3', glow: 'rgba(75,156,211,0.65)', r: 11,
+                    definition: 'Pionero en el estudio experimental de las redes de comunicación en grupos pequeños y su efecto en el rendimiento.',
+                    relatedAuthors: ['Lewin'] },
+                { id: 'modelos_red', name: 'Modelos de red', author: 'Bavelas', type: 'concepto',
+                    category: 'comunicacion', color: '#4b9cd3', glow: 'rgba(75,156,211,0.65)', r: 14,
+                    definition: 'Estructuras de comunicación que determinan el flujo de información: cadena, rueda, círculo y red total.',
+                    relatedAuthors: ['Bavelas', 'Lewin'] },
+                { id: 'modelo_cadena', name: 'Modelo de cadena', author: 'Bavelas / Lewin', type: 'concepto',
+                    category: 'comunicacion', color: '#4b9cd3', glow: 'rgba(75,156,211,0.65)', r: 10,
+                    definition: 'Red donde la información fluye secuencialmente a través de intermediarios.',
+                    relatedAuthors: ['Bavelas', 'Lewin'] },
+                { id: 'modelo_rueda', name: 'Modelo de rueda', author: 'Bavelas / Lewin', type: 'concepto',
+                    category: 'comunicacion', color: '#4b9cd3', glow: 'rgba(75,156,211,0.65)', r: 10,
+                    definition: 'Red centralizada donde un nodo central recibe y distribuye toda la información.',
+                    relatedAuthors: ['Bavelas', 'Lewin'] },
+                { id: 'modelo_circulo', name: 'Modelo de círculo', author: 'Bavelas / Lewin', type: 'concepto',
+                    category: 'comunicacion', color: '#4b9cd3', glow: 'rgba(75,156,211,0.65)', r: 10,
+                    definition: 'Red descentralizada donde cada miembro se comunica con dos vecinos, formando un circuito.',
+                    relatedAuthors: ['Bavelas', 'Lewin'] },
+                { id: 'allport_postman', name: 'Allport y Postman', author: 'Allport y Postman', type: 'autor',
+                    category: 'comunicacion', color: '#4b9cd3', glow: 'rgba(75,156,211,0.65)', r: 11,
+                    definition: 'Estudiaron la psicología del rumor, formulando la ley básica: R = i × a (rumor = importancia × ambigüedad).',
+                    relatedAuthors: ['Allport'] },
+                { id: 'rumores', name: 'Rumores', author: 'Allport y Postman', type: 'concepto',
+                    category: 'comunicacion', color: '#4b9cd3', glow: 'rgba(75,156,211,0.65)', r: 13,
+                    definition: 'Información no verificada que circula en situaciones de ambigüedad e importancia, transformándose mediante nivelación, agudización y asimilación.',
+                    relatedAuthors: ['Allport y Postman'] },
+                { id: 'lewin', name: 'Kurt Lewin', author: 'Lewin', type: 'autor', category: 'comunicacion',
+                    color: '#4b9cd3', glow: 'rgba(75,156,211,0.65)', r: 11,
+                    definition: 'Fundador de la psicología social moderna. Desarrolló la teoría del campo y estudió dinámicas de grupo y comunicación.',
+                    relatedAuthors: ['Bavelas', 'Sherif'] },
+
+                // GRUPOS E IDENTIDAD
+                { id: 'tajfel', name: 'Henri Tajfel', author: 'Tajfel', type: 'autor', category: 'identidad',
+                    color: '#3da87a', glow: 'rgba(61,168,122,0.65)', r: 11,
+                    definition: 'Desarrolló la teoría de la identidad social, mostrando cómo la pertenencia grupal influye en la autoestima y el comportamiento intergrupal.',
+                    relatedAuthors: ['Turner', 'Sherif'] },
+                { id: 'identidad_social_conc', name: 'Identidad social', author: 'Tajfel', type: 'concepto',
+                    category: 'identidad', color: '#3da87a', glow: 'rgba(61,168,122,0.65)', r: 16,
+                    definition: 'Parte del autoconcepto derivada de la pertenencia a grupos sociales, que genera favoritismo endogrupal y diferenciación exogrupal.',
+                    relatedAuthors: ['Tajfel', 'Turner'] },
+                { id: 'turner', name: 'John C. Turner', author: 'Turner', type: 'autor', category: 'identidad',
+                    color: '#3da87a', glow: 'rgba(61,168,122,0.65)', r: 10,
+                    definition: 'Desarrolló la teoría de la autocategorización, explicando cómo las personas se definen a sí mismas en términos de categorías sociales.',
+                    relatedAuthors: ['Tajfel'] },
+                { id: 'endogrupo_exogrupo', name: 'Endogrupo / Exogrupo', author: 'Tajfel / Turner', type: 'concepto',
+                    category: 'identidad', color: '#3da87a', glow: 'rgba(61,168,122,0.65)', r: 12,
+                    definition: 'Distinción fundamental entre el grupo al que se pertenece (endogrupo) y los grupos externos (exogrupo), base de sesgos intergrupales.',
+                    relatedAuthors: ['Tajfel', 'Turner'] },
+                { id: 'dinamica_intergrupal', name: 'Dinámica intergrupal', author: 'Tajfel / Sherif', type: 'concepto',
+                    category: 'identidad', color: '#3da87a', glow: 'rgba(61,168,122,0.65)', r: 12,
+                    definition: 'Procesos de interacción entre grupos que incluyen cooperación, competencia, conflicto y formación de identidades colectivas.',
+                    relatedAuthors: ['Tajfel', 'Sherif'] },
+
+                // INTERACCIONISMO Y SIGNIFICADO
+                { id: 'mead', name: 'George H. Mead', author: 'Mead', type: 'autor', category: 'interaccionismo',
+                    color: '#3ba7bf', glow: 'rgba(59,167,191,0.65)', r: 11,
+                    definition: 'Filósofo y psicólogo social, fundador del interaccionismo simbólico. Enfatizó el rol del lenguaje y los símbolos en la construcción del self.',
+                    relatedAuthors: ['Blumer', 'Wittgenstein'] },
+                { id: 'blumer', name: 'Herbert Blumer', author: 'Blumer', type: 'autor', category: 'interaccionismo',
+                    color: '#3ba7bf', glow: 'rgba(59,167,191,0.65)', r: 10,
+                    definition: 'Acuñó el término "interaccionismo simbólico" y sistematizó sus principios: significado, interacción e interpretación.',
+                    relatedAuthors: ['Mead'] },
+                { id: 'interaccionismo_simb', name: 'Interaccionismo simbólico', author: 'Mead / Blumer',
+                    type: 'concepto', category: 'interaccionismo', color: '#3ba7bf',
+                    glow: 'rgba(59,167,191,0.65)', r: 15,
+                    definition: 'Perspectiva teórica que estudia cómo las personas crean y negocian significados a través de la interacción social mediada por símbolos.',
+                    relatedAuthors: ['Mead', 'Blumer'] },
+                { id: 'wittgenstein', name: 'Ludwig Wittgenstein', author: 'Wittgenstein', type: 'autor',
+                    category: 'interaccionismo', color: '#3ba7bf', glow: 'rgba(59,167,191,0.65)', r: 10,
+                    definition: 'Filósofo del lenguaje cuyas ideas sobre los "juegos de lenguaje" influyeron en la comprensión del significado como práctica social.',
+                    relatedAuthors: ['Mead'] },
+                { id: 'lenguaje_significado', name: 'Lenguaje y significado social', author: 'Wittgenstein / Mead',
+                    type: 'concepto', category: 'interaccionismo', color: '#3ba7bf',
+                    glow: 'rgba(59,167,191,0.65)', r: 12,
+                    definition: 'El significado emerge del uso del lenguaje en contextos sociales concretos, no de definiciones abstractas.',
+                    relatedAuthors: ['Wittgenstein', 'Mead'] },
+
+                // ENFOQUES FILOSÓFICOS
+                { id: 'husserl', name: 'Edmund Husserl', author: 'Husserl', type: 'autor', category: 'filosofia',
+                    color: '#8b6fcf', glow: 'rgba(139,111,207,0.6)', r: 9,
+                    definition: 'Fundador de la fenomenología, centrada en la experiencia consciente y la intencionalidad.',
+                    relatedAuthors: ['Heidegger', 'Sartre'] },
+                { id: 'heidegger', name: 'Martin Heidegger', author: 'Heidegger', type: 'autor', category: 'filosofia',
+                    color: '#8b6fcf', glow: 'rgba(139,111,207,0.6)', r: 9,
+                    definition: 'Exploró el ser-en-el-mundo (Dasein) y la hermenéutica de la existencia.',
+                    relatedAuthors: ['Husserl', 'Sartre'] },
+                { id: 'sartre', name: 'Jean-Paul Sartre', author: 'Sartre', type: 'autor', category: 'filosofia',
+                    color: '#8b6fcf', glow: 'rgba(139,111,207,0.6)', r: 9,
+                    definition: 'Filósofo existencialista que enfatizó la libertad radical y la responsabilidad individual en la construcción del yo.',
+                    relatedAuthors: ['Heidegger', 'Husserl'] },
+                { id: 'hegel', name: 'G.W.F. Hegel', author: 'Hegel', type: 'autor', category: 'filosofia',
+                    color: '#8b6fcf', glow: 'rgba(139,111,207,0.6)', r: 9,
+                    definition: 'Su dialéctica del amo y el esclavo influyó en teorías sobre reconocimiento social e identidad.',
+                    relatedAuthors: ['Sartre'] },
+                { id: 'fenomenologia', name: 'Fenomenología social', author: 'Husserl / Schutz', type: 'concepto',
+                    category: 'filosofia', color: '#8b6fcf', glow: 'rgba(139,111,207,0.6)', r: 12,
+                    definition: 'Estudio de la experiencia subjetiva y la construcción de significado en la vida cotidiana.',
+                    relatedAuthors: ['Husserl', 'Heidegger'] },
+
+                // PODER Y AUTORIDAD
+                { id: 'french_raven', name: 'French y Raven', author: 'French y Raven', type: 'autor',
+                    category: 'poder', color: '#c75b7a', glow: 'rgba(199,91,122,0.6)', r: 11,
+                    definition: 'Formularon la teoría de las cinco bases del poder social: coercitivo, de recompensa, legítimo, experto y referente.',
+                    relatedAuthors: ['Milgram'] },
+                { id: 'bases_poder', name: 'Bases del poder', author: 'French y Raven', type: 'concepto',
+                    category: 'poder', color: '#c75b7a', glow: 'rgba(199,91,122,0.6)', r: 14,
+                    definition: 'Clasificación de fuentes de poder: coercitivo, de recompensa, legítimo, experto y referente.',
+                    relatedAuthors: ['French y Raven', 'Milgram'] },
+                { id: 'autoridad', name: 'Autoridad', author: 'Milgram / French y Raven', type: 'concepto',
+                    category: 'poder', color: '#c75b7a', glow: 'rgba(199,91,122,0.6)', r: 13,
+                    definition: 'Capacidad de influir basada en el estatus o rol reconocido, que puede generar obediencia incluso en contra de la conciencia.',
+                    relatedAuthors: ['Milgram', 'French y Raven'] },
+            ];
+
+            // ==================== DATA: EDGES ====================
+            const edges = [
+                // Núcleo → todos
+                { source: 'psicologia_social', target: 'influencia_minoritaria', label: 'contiene' },
+                { source: 'psicologia_social', target: 'conformidad', label: 'abarca' },
+                { source: 'psicologia_social', target: 'obediencia', label: 'abarca' },
+                { source: 'psicologia_social', target: 'identidad_social_conc', label: 'articula' },
+                { source: 'psicologia_social', target: 'interaccionismo_simb', label: 'dialoga con' },
+                { source: 'psicologia_social', target: 'modelos_red', label: 'vincula' },
+                { source: 'psicologia_social', target: 'rumores', label: 'contextualiza' },
+                { source: 'psicologia_social', target: 'disonancia_cognitiva', label: 'integra' },
+                { source: 'psicologia_social', target: 'rutas_persuasion', label: 'integra' },
+
+                // Cognitivo-social
+                { source: 'disonancia_cognitiva', target: 'persuasion_concepto', label: 'fundamenta' },
+                { source: 'rutas_persuasion', target: 'persuasion_concepto', label: 'modela' },
+                { source: 'persuasion_concepto', target: 'influencia_minoritaria', label: 'relacionado con' },
+
+                // Influencia social
+                { source: 'asch', target: 'conformidad', label: 'demostró' },
+                { source: 'sherif', target: 'normas_sociales', label: 'descubrió' },
+                { source: 'sherif', target: 'conformidad', label: 'precursor de' },
+                { source: 'milgram', target: 'obediencia', label: 'demostró' },
+                { source: 'influencia_minoritaria', target: 'conformidad', label: 'contrasta con' },
+                { source: 'normas_sociales', target: 'conformidad', label: 'refuerza' },
+                { source: 'obediencia', target: 'autoridad', label: 'implica' },
+                { source: 'asch', target: 'milgram', label: 'influyó en' },
+
+                // Comunicación
+                { source: 'bavelas', target: 'modelos_red', label: 'diseñó' },
+                { source: 'lewin', target: 'modelos_red', label: 'inspiró' },
+                { source: 'modelos_red', target: 'modelo_cadena', label: 'tipifica' },
+                { source: 'modelos_red', target: 'modelo_rueda', label: 'tipifica' },
+                { source: 'modelos_red', target: 'modelo_circulo', label: 'tipifica' },
+                { source: 'allport_postman', target: 'rumores', label: 'formularon' },
+                { source: 'rumores', target: 'modelos_red', label: 'circula en' },
+                { source: 'lewin', target: 'dinamica_intergrupal', label: 'precursor de' },
+
+                // Identidad
+                { source: 'tajfel', target: 'identidad_social_conc', label: 'formuló' },
+                { source: 'turner', target: 'identidad_social_conc', label: 'extendió' },
+                { source: 'identidad_social_conc', target: 'endogrupo_exogrupo', label: 'implica' },
+                { source: 'endogrupo_exogrupo', target: 'dinamica_intergrupal', label: 'genera' },
+                { source: 'tajfel', target: 'turner', label: 'colaboró con' },
+                { source: 'sherif', target: 'dinamica_intergrupal', label: 'precursor de' },
+
+                // Interaccionismo
+                { source: 'mead', target: 'interaccionismo_simb', label: 'fundó' },
+                { source: 'blumer', target: 'interaccionismo_simb', label: 'sistematizó' },
+                { source: 'mead', target: 'blumer', label: 'influyó en' },
+                { source: 'wittgenstein', target: 'lenguaje_significado', label: 'inspiró' },
+                { source: 'mead', target: 'lenguaje_significado', label: 'articuló' },
+                { source: 'lenguaje_significado', target: 'interaccionismo_simb', label: 'sustenta' },
+
+                // Filosofía
+                { source: 'husserl', target: 'fenomenologia', label: 'fundó' },
+                { source: 'heidegger', target: 'fenomenologia', label: 'expandió' },
+                { source: 'husserl', target: 'heidegger', label: 'maestro de' },
+                { source: 'heidegger', target: 'sartre', label: 'influyó en' },
+                { source: 'hegel', target: 'sartre', label: 'precursor de' },
+                { source: 'fenomenologia', target: 'interaccionismo_simb', label: 'influye en' },
+
+                // Poder
+                { source: 'french_raven', target: 'bases_poder', label: 'formularon' },
+                { source: 'bases_poder', target: 'autoridad', label: 'clasifica' },
+                { source: 'milgram', target: 'autoridad', label: 'evidenció' },
+                { source: 'autoridad', target: 'obediencia', label: 'posibilita' },
+                { source: 'french_raven', target: 'milgram', label: 'complementa' },
+
+                // Cross-category
+                { source: 'identidad_social_conc', target: 'conformidad', label: 'modula' },
+                { source: 'interaccionismo_simb', target: 'normas_sociales', label: 'explica' },
+                { source: 'lenguaje_significado', target: 'rumores', label: 'estructura' },
+                { source: 'fenomenologia', target: 'psicologia_social', label: 'fundamenta parcialmente' },
+                { source: 'bases_poder', target: 'influencia_minoritaria', label: 'contextualiza' },
+                { source: 'dinamica_intergrupal', target: 'conformidad', label: 'intensifica' },
+            ];
+
+            // ==================== PHENOMENON MAPPING ====================
+            // relevance: 2 = core, 1 = secondary, 0 = dimmed
+            const phenomenonMapping = {
+                'comunicacion_social': {
+                    core: ['bavelas', 'modelos_red', 'modelo_cadena', 'modelo_rueda', 'modelo_circulo', 'rumores',
+                        'allport_postman', 'lewin'
+                    ],
+                    secondary: ['psicologia_social', 'interaccionismo_simb', 'mead', 'blumer',
+                    'lenguaje_significado'],
+                    centralNode: 'modelos_red'
+                },
+                'influencia_social': {
+                    core: ['asch', 'milgram', 'sherif', 'influencia_minoritaria', 'conformidad', 'obediencia',
+                        'normas_sociales', 'psicologia_social'
+                    ],
+                    secondary: ['french_raven', 'bases_poder', 'autoridad', 'identidad_social_conc', 'tajfel'],
+                    centralNode: 'influencia_minoritaria'
+                },
+                'persuasion': {
+                    core: ['persuasion_concepto', 'rutas_persuasion', 'disonancia_cognitiva', 'influencia_minoritaria'],
+                    secondary: ['psicologia_social', 'conformidad', 'modelos_red'],
+                    centralNode: 'persuasion_concepto'
+                },
+                'conformidad': {
+                    core: ['conformidad', 'asch', 'sherif', 'normas_sociales'],
+                    secondary: ['psicologia_social', 'identidad_social_conc', 'dinamica_intergrupal', 'milgram'],
+                    centralNode: 'conformidad'
+                },
+                'obediencia': {
+                    core: ['obediencia', 'milgram', 'autoridad', 'french_raven', 'bases_poder'],
+                    secondary: ['psicologia_social', 'conformidad', 'asch'],
+                    centralNode: 'obediencia'
+                },
+                'identidad_social': {
+                    core: ['identidad_social_conc', 'tajfel', 'turner', 'endogrupo_exogrupo',
+                    'dinamica_intergrupal'],
+                    secondary: ['psicologia_social', 'sherif', 'conformidad'],
+                    centralNode: 'identidad_social_conc'
+                },
+                'dinamica_grupos': {
+                    core: ['dinamica_intergrupal', 'tajfel', 'turner', 'sherif', 'lewin', 'endogrupo_exogrupo',
+                        'normas_sociales'
+                    ],
+                    secondary: ['psicologia_social', 'identidad_social_conc', 'conformidad', 'modelos_red'],
+                    centralNode: 'dinamica_intergrupal'
+                },
+                'rumores': {
+                    core: ['rumores', 'allport_postman', 'modelos_red', 'bavelas', 'modelo_cadena'],
+                    secondary: ['psicologia_social', 'lenguaje_significado', 'interaccionismo_simb'],
+                    centralNode: 'rumores'
+                },
+                'representaciones_sociales': {
+                    core: ['psicologia_social', 'influencia_minoritaria', 'normas_sociales',
+                    'interaccionismo_simb'],
+                    secondary: ['lenguaje_significado', 'fenomenologia', 'identidad_social_conc', 'rumores'],
+                    centralNode: 'psicologia_social'
+                },
+                'interaccion_simbolica': {
+                    core: ['interaccionismo_simb', 'mead', 'blumer', 'lenguaje_significado', 'wittgenstein'],
+                    secondary: ['psicologia_social', 'fenomenologia', 'husserl', 'normas_sociales'],
+                    centralNode: 'interaccionismo_simb'
+                },
+                'all': {
+                    core: [],
+                    secondary: [],
+                    centralNode: null,
+                    allActive: true
+                }
+            };
+
+            // ==================== POSITIONS ====================
+            // Pre-calculated positions in a 1400x950 space
+            const positions = {
+                'psicologia_social': { x: 700, y: 475 },
+                'disonancia_cognitiva': { x: 980, y: 240 },
+                'rutas_persuasion': { x: 1050, y: 330 },
+                'persuasion_concepto': { x: 960, y: 370 },
+                'asch': { x: 1100, y: 500 },
+                'milgram': { x: 1080, y: 620 },
+                'sherif': { x: 1020, y: 550 },
+                'influencia_minoritaria': { x: 900, y: 520 },
+                'conformidad': { x: 1040, y: 470 },
+                'obediencia': { x: 1060, y: 660 },
+                'normas_sociales': { x: 980, y: 590 },
+                'bavelas': { x: 320, y: 160 },
+                'modelos_red': { x: 420, y: 220 },
+                'modelo_cadena': { x: 280, y: 260 },
+                'modelo_rueda': { x: 380, y: 300 },
+                'modelo_circulo': { x: 480, y: 280 },
+                'allport_postman': { x: 200, y: 340 },
+                'rumores': { x: 300, y: 370 },
+                'lewin': { x: 500, y: 350 },
+                'tajfel': { x: 180, y: 530 },
+                'identidad_social_conc': { x: 250, y: 500 },
+                'turner': { x: 140, y: 590 },
+                'endogrupo_exogrupo': { x: 220, y: 620 },
+                'dinamica_intergrupal': { x: 300, y: 620 },
+                'mead': { x: 380, y: 720 },
+                'blumer': { x: 300, y: 770 },
+                'interaccionismo_simb': { x: 400, y: 650 },
+                'wittgenstein': { x: 500, y: 730 },
+                'lenguaje_significado': { x: 480, y: 680 },
+                'husserl': { x: 620, y: 780 },
+                'heidegger': { x: 700, y: 800 },
+                'sartre': { x: 780, y: 780 },
+                'hegel': { x: 850, y: 810 },
+                'fenomenologia': { x: 700, y: 730 },
+                'french_raven': { x: 900, y: 730 },
+                'bases_poder': { x: 850, y: 680 },
+                'autoridad': { x: 950, y: 720 },
+            };
+
+            // ==================== STATE ====================
+            const nodeMap = {};
+            nodes.forEach(n => { nodeMap[n.id] = n; });
+
+            const edgeList = edges.map(e => ({
+                ...e,
+                sourceId: e.source,
+                targetId: e.target,
+                sourceNode: nodeMap[e.source],
+                targetNode: nodeMap[e.target],
+            }));
+
+            let currentPhenomenon = 'all';
+            let selectedNodeId = null;
+            let viewBox = { x: 0, y: 0, w: 1400, h: 950 };
+            let zoomLevel = 1;
+            let panOffset = { x: 0, y: 0 };
+            let isPanning = false;
+            let panStart = { x: 0, y: 0 };
+            let panStartOffset = { x: 0, y: 0 };
+
+            // ==================== DOM REFS ====================
+            const svgEl = document.getElementById('main-svg');
+            const canvasContainer = document.getElementById('canvas-container');
+            const tooltipEl = document.getElementById('tooltip');
+            const sidePanel = document.getElementById('side-panel');
+            const panelContent = document.getElementById('panel-content');
+            const phenomenonSelect = document.getElementById('phenomenon-select');
+            const resetBtn = document.getElementById('reset-btn');
+
+            // ==================== SVG SETUP ====================
+            svgEl.setAttribute('viewBox', `0 0 ${viewBox.w} ${viewBox.h}`);
+            svgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+
+            // Defs
+            const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+
+            // Glow filters per category color
+            const glowColors = {
+                'nucleo': '#c9a84c',
+                'cognitivo': '#e8973a',
+                'influencia': '#e0524b',
+                'comunicacion': '#4b9cd3',
+                'identidad': '#3da87a',
+                'interaccionismo': '#3ba7bf',
+                'filosofia': '#8b6fcf',
+                'poder': '#c75b7a',
+            };
+
+            Object.entries(glowColors).forEach(([cat, color]) => {
+                const filter = document.createElementNS('http://www.w3.org/2000/svg', 'filter');
+                filter.setAttribute('id', `glow-${cat}`);
+                filter.setAttribute('x', '-60%');
+                filter.setAttribute('y', '-60%');
+                filter.setAttribute('width', '220%');
+                filter.setAttribute('height', '220%');
+                filter.innerHTML = `
+                    <feGaussianBlur stdDeviation="4.5" result="blur" />
+                    <feMerge>
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                `;
+                defs.appendChild(filter);
+
+                // Stronger glow for active
+                const filterStrong = document.createElementNS('http://www.w3.org/2000/svg', 'filter');
+                filterStrong.setAttribute('id', `glow-strong-${cat}`);
+                filterStrong.setAttribute('x', '-80%');
+                filterStrong.setAttribute('y', '-80%');
+                filterStrong.setAttribute('width', '260%');
+                filterStrong.setAttribute('height', '260%');
+                filterStrong.innerHTML = `
+                    <feGaussianBlur stdDeviation="8" result="blur" />
+                    <feMerge>
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                `;
+                defs.appendChild(filterStrong);
+            });
+
+            svgEl.appendChild(defs);
+
+            // Main group for pan/zoom
+            const mainGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            mainGroup.setAttribute('id', 'main-group');
+            svgEl.appendChild(mainGroup);
+
+            // Edges group (below nodes)
+            const edgesGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            edgesGroup.setAttribute('id', 'edges-group');
+            mainGroup.appendChild(edgesGroup);
+
+            // Nodes group
+            const nodesGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            nodesGroup.setAttribute('id', 'nodes-group');
+            mainGroup.appendChild(nodesGroup);
+
+            // ==================== RENDER ====================
+            function getNodePos(nodeId) {
+                const pos = positions[nodeId];
+                if (!pos) return { x: 700, y: 475 };
+                return { x: pos.x, y: pos.y };
+            }
+
+            function renderEdges() {
+                edgesGroup.innerHTML = '';
+                edgeList.forEach(edge => {
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    const sp = getNodePos(edge.sourceId);
+                    const tp = getNodePos(edge.targetId);
+                    line.setAttribute('x1', sp.x);
+                    line.setAttribute('y1', sp.y);
+                    line.setAttribute('x2', tp.x);
+                    line.setAttribute('y2', tp.y);
+                    line.setAttribute('stroke', '#2d3a50');
+                    line.setAttribute('stroke-width', '1.2');
+                    line.setAttribute('stroke-opacity', '0.5');
+                    line.setAttribute('class', 'edge-line');
+                    line.setAttribute('data-source', edge.sourceId);
+                    line.setAttribute('data-target', edge.targetId);
+                    line.setAttribute('data-label', edge.label || '');
+                    edgesGroup.appendChild(line);
+                });
+            }
+
+            function renderNodes() {
+                nodesGroup.innerHTML = '';
+                nodes.forEach(node => {
+                    const pos = getNodePos(node.id);
+                    const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                    group.setAttribute('class', 'node-group');
+                    group.setAttribute('data-node-id', node.id);
+                    group.setAttribute('transform', `translate(${pos.x}, ${pos.y})`);
+                    group.setAttribute('data-category', node.category);
+                    group.setAttribute('data-type', node.type);
+
+                    // Glow ring (outer pulse)
+                    const glowRing = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    glowRing.setAttribute('r', node.r + 8);
+                    glowRing.setAttribute('fill', 'none');
+                    glowRing.setAttribute('stroke', node.glow);
+                    glowRing.setAttribute('stroke-width', '3');
+                    glowRing.setAttribute('stroke-opacity', '0');
+                    glowRing.setAttribute('class', 'pulse-ring');
+                    glowRing.setAttribute('data-role', 'glow-ring');
+                    group.appendChild(glowRing);
+
+                    // Main circle
+                    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    circle.setAttribute('r', node.r);
+                    circle.setAttribute('fill', node.color);
+                    circle.setAttribute('fill-opacity', '0.85');
+                    circle.setAttribute('stroke', '#ffffff');
+                    circle.setAttribute('stroke-width', '1.5');
+                    circle.setAttribute('stroke-opacity', '0.3');
+                    circle.setAttribute('data-role', 'main-circle');
+                    circle.style.transition =
+                        'fill-opacity 0.5s ease, stroke-opacity 0.5s ease, r 0.5s ease';
+                    group.appendChild(circle);
+
+                    // Inner highlight
+                    const innerDot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    innerDot.setAttribute('r', node.r * 0.35);
+                    innerDot.setAttribute('fill', '#ffffff');
+                    innerDot.setAttribute('fill-opacity', '0.25');
+                    innerDot.setAttribute('data-role', 'inner-dot');
+                    group.appendChild(innerDot);
+
+                    // Text label
+                    const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    label.setAttribute('text-anchor', 'middle');
+                    label.setAttribute('dy', node.r + 16);
+                    label.setAttribute('font-size', node.type === 'teoria' ? '11px' : node.type === 'concepto' ?
+                        '9px' : '8px');
+                    label.setAttribute('fill', '#cbd5e1');
+                    label.setAttribute('font-weight', node.type === 'teoria' ? '700' : node.type === 'concepto' ?
+                        '600' : '400');
+                    label.setAttribute('letter-spacing', '0.03em');
+                    label.setAttribute('pointer-events', 'none');
+                    label.textContent = node.name.length > 28 ? node.name.substring(0, 26) + '…' : node.name;
+                    label.style.transition = 'fill-opacity 0.5s ease';
+                    group.appendChild(label);
+
+                    nodesGroup.appendChild(group);
+                });
+            }
+
+            function renderAll() {
+                renderEdges();
+                renderNodes();
+                applyPhenomenonState();
+            }
+
+            // ==================== PHENOMENON LOGIC ====================
+            function getRelevance(nodeId, phenomenon) {
+                if (phenomenon === 'all') return 2;
+                const mapping = phenomenonMapping[phenomenon];
+                if (!mapping) return 0;
+                if (mapping.allActive) return 2;
+                if (mapping.core.includes(nodeId)) return 2;
+                if (mapping.secondary.includes(nodeId)) return 1;
+                return 0;
+            }
+
+            function applyPhenomenonState(animate = false) {
+                const phenomenon = currentPhenomenon;
+                const allEdges = edgesGroup.querySelectorAll('.edge-line');
+                const allNodeGroups = nodesGroup.querySelectorAll('.node-group');
+
+                // Update edges
+                allEdges.forEach(line => {
+                    const src = line.getAttribute('data-source');
+                    const tgt = line.getAttribute('data-target');
+                    const srcRel = getRelevance(src, phenomenon);
+                    const tgtRel = getRelevance(tgt, phenomenon);
+                    const maxRel = Math.max(srcRel, tgtRel);
+
+                    line.classList.remove('dimmed', 'partial', 'active');
+                    if (phenomenon === 'all') {
+                        line.setAttribute('stroke', '#2d3a50');
+                        line.setAttribute('stroke-width', '1.2');
+                        line.setAttribute('stroke-opacity', '0.5');
+                    } else if (maxRel === 2) {
+                        line.classList.add('active');
+                        line.setAttribute('stroke', '#6db9e8');
+                        line.setAttribute('stroke-width', '2.5');
+                        line.setAttribute('stroke-opacity', '0.85');
+                    } else if (maxRel === 1) {
+                        line.classList.add('partial');
+                        line.setAttribute('stroke', '#3d5570');
+                        line.setAttribute('stroke-width', '1.4');
+                        line.setAttribute('stroke-opacity', '0.35');
+                    } else {
+                        line.classList.add('dimmed');
+                        line.setAttribute('stroke', '#1a2535');
+                        line.setAttribute('stroke-width', '0.8');
+                        line.setAttribute('stroke-opacity', '0.1');
+                    }
+                });
+
+                // Update nodes
+                allNodeGroups.forEach(group => {
+                    const nodeId = group.getAttribute('data-node-id');
+                    const rel = getRelevance(nodeId, phenomenon);
+                    const node = nodeMap[nodeId];
+                    const glowRing = group.querySelector('[data-role="glow-ring"]');
+                    const mainCircle = group.querySelector('[data-role="main-circle"]');
+                    const label = group.querySelector('text');
+
+                    group.classList.remove('dimmed', 'partial', 'active');
+
+                    if (phenomenon === 'all') {
+                        group.classList.add('active');
+                        group.style.opacity = '1';
+                        if (glowRing) glowRing.setAttribute('stroke-opacity', '0');
+                        if (mainCircle) {
+                            mainCircle.setAttribute('fill-opacity', '0.85');
+                            mainCircle.setAttribute('stroke-opacity', '0.3');
+                            mainCircle.setAttribute('r', node.r);
+                        }
+                        if (label) label.setAttribute('fill-opacity', '1');
+                        group.removeAttribute('filter');
+                    } else if (rel === 2) {
+                        group.classList.add('active');
+                        group.style.opacity = '1';
+                        if (glowRing) {
+                            glowRing.setAttribute('stroke-opacity', '0.9');
+                            glowRing.setAttribute('r', node.r + 10);
+                        }
+                        if (mainCircle) {
+                            mainCircle.setAttribute('fill-opacity', '1');
+                            mainCircle.setAttribute('stroke-opacity', '0.9');
+                            mainCircle.setAttribute('r', node.r + 3);
+                        }
+                        if (label) {
+                            label.setAttribute('fill-opacity', '1');
+                            label.setAttribute('fill', '#ffffff');
+                        }
+                        group.setAttribute('filter', `url(#glow-strong-${node.category})`);
+                    } else if (rel === 1) {
+                        group.classList.add('partial');
+                        group.style.opacity = '0.6';
+                        if (glowRing) {
+                            glowRing.setAttribute('stroke-opacity', '0.35');
+                            glowRing.setAttribute('r', node.r + 5);
+                        }
+                        if (mainCircle) {
+                            mainCircle.setAttribute('fill-opacity', '0.55');
+                            mainCircle.setAttribute('stroke-opacity', '0.4');
+                            mainCircle.setAttribute('r', node.r);
+                        }
+                        if (label) label.setAttribute('fill-opacity', '0.6');
+                        group.setAttribute('filter', `url(#glow-${node.category})`);
+                    } else {
+                        group.classList.add('dimmed');
+                        group.style.opacity = '0.2';
+                        if (glowRing) glowRing.setAttribute('stroke-opacity', '0');
+                        if (mainCircle) {
+                            mainCircle.setAttribute('fill-opacity', '0.18');
+                            mainCircle.setAttribute('stroke-opacity', '0.08');
+                            mainCircle.setAttribute('r', node.r - 1);
+                        }
+                        if (label) label.setAttribute('fill-opacity', '0.18');
+                        group.removeAttribute('filter');
+                    }
+                });
+
+                // Cascade animation
+                if (animate && phenomenon !== 'all') {
+                    animateCascade(phenomenon);
+                }
+            }
+
+            function animateCascade(phenomenon) {
+                const mapping = phenomenonMapping[phenomenon];
+                if (!mapping || !mapping.centralNode) return;
+
+                const centralId = mapping.centralNode;
+                const centralPos = getNodePos(centralId);
+
+                // Calculate distances from central node
+                const allRelevant = [...new Set([...mapping.core, ...mapping.secondary])];
+                const nodeDistances = allRelevant.map(nid => {
+                    const pos = getNodePos(nid);
+                    const dist = Math.sqrt((pos.x - centralPos.x) ** 2 + (pos.y - centralPos.y) ** 2);
+                    return { id: nid, dist };
+                });
+                nodeDistances.sort((a, b) => a.dist - b.dist);
+
+                // Temporarily dim all, then activate in waves
+                const allNodeGroups = nodesGroup.querySelectorAll('.node-group');
+                const allEdges = edgesGroup.querySelectorAll('.edge-line');
+
+                // First, briefly dim everything
+                allNodeGroups.forEach(g => {
+                    const nid = g.getAttribute('data-node-id');
+                    if (allRelevant.includes(nid)) {
+                        g.style.opacity = '0.15';
+                        g.style.transition = 'opacity 0.3s ease';
+                    }
+                });
+                allEdges.forEach(l => {
+                    const src = l.getAttribute('data-source');
+                    const tgt = l.getAttribute('data-target');
+                    if (allRelevant.includes(src) || allRelevant.includes(tgt)) {
+                        l.setAttribute('stroke-opacity', '0.08');
+                    }
+                });
+
+                // Then activate in waves
+                const waveDelay = 80;
+                nodeDistances.forEach((item, index) => {
+                    setTimeout(() => {
+                        const group = nodesGroup.querySelector(`[data-node-id="${item.id}"]`);
+                        if (group) {
+                            const rel = getRelevance(item.id, phenomenon);
+                            group.style.opacity = rel === 2 ? '1' : '0.6';
+                            group.style.transition = 'opacity 0.5s ease';
+                        }
+                        // Also light up connected edges
+                        allEdges.forEach(l => {
+                            const src = l.getAttribute('data-source');
+                            const tgt = l.getAttribute('data-target');
+                            if (src === item.id || tgt === item.id) {
+                                const srcRel = getRelevance(src, phenomenon);
+                                const tgtRel = getRelevance(tgt, phenomenon);
+                                const mr = Math.max(srcRel, tgtRel);
+                                if (mr >= 1) {
+                                    l.setAttribute('stroke-opacity', mr === 2 ? '0.85' : '0.35');
+                                    l.style.transition = 'stroke-opacity 0.5s ease';
+                                }
+                            }
+                        });
+                    }, index * waveDelay + 150);
+                });
+
+                // Final settle
+                setTimeout(() => {
+                    applyPhenomenonState(false);
+                }, nodeDistances.length * waveDelay + 400);
+            }
+
+            // ==================== EVENT HANDLERS ====================
+            function updateTooltip(evt, nodeId) {
+                if (!nodeId) {
+                    tooltipEl.classList.remove('visible');
+                    return;
+                }
+                const node = nodeMap[nodeId];
+                if (!node) {
+                    tooltipEl.classList.remove('visible');
+                    return;
+                }
+                tooltipEl.querySelector('.tt-name').textContent = node.name;
+                tooltipEl.querySelector('.tt-cat').textContent =
+                    `${node.type.toUpperCase()} · ${node.category.replace('_', ' ').toUpperCase()} · ${node.author}`;
+                tooltipEl.style.left = (evt.clientX + 18) + 'px';
+                tooltipEl.style.top = (evt.clientY - 40) + 'px';
+                tooltipEl.classList.add('visible');
+            }
+
+            function updateSidePanel(nodeId) {
+                if (!nodeId) {
+                    panelContent.innerHTML = `
+                        <div class="empty-state">
+                            Haz clic en un nodo para ver su definición y conexiones.<br><br>
+                            O selecciona un fenómeno en el menú superior para ver la activación de la red.
+                        </div>`;
+                    return;
+                }
+                const node = nodeMap[nodeId];
+                if (!node) return;
+
+                const categoryTagClass = {
+                    'nucleo': 'tag-gold',
+                    'cognitivo': 'tag-amber',
+                    'influencia': 'tag-red',
+                    'comunicacion': 'tag-blue',
+                    'identidad': 'tag-green',
+                    'interaccionismo': 'tag-cyan',
+                    'filosofia': 'tag-violet',
+                    'poder': 'tag-rose',
+                } [node.category] || 'tag-blue';
+
+                const connectedEdges = edgeList.filter(
+                    e => e.sourceId === nodeId || e.targetId === nodeId
+                );
+                const connectedNodeIds = new Set();
+                connectedEdges.forEach(e => {
+                    if (e.sourceId !== nodeId) connectedNodeIds.add(e.sourceId);
+                    if (e.targetId !== nodeId) connectedNodeIds.add(e.targetId);
+                });
+
+                let connHTML = '';
+                connectedEdges.forEach(e => {
+                    const otherId = e.sourceId === nodeId ? e.targetId : e.sourceId;
+                    const otherNode = nodeMap[otherId];
+                    const dir = e.sourceId === nodeId ? '→' : '←';
+                    connHTML += `
+                        <li>
+                            <span style="color:#6db9e8;">${dir} ${otherNode ? otherNode.name : otherId}</span>
+                            <span style="color:#6b7280;font-size:0.65rem;">(${e.label || 'relacionado'})</span>
+                        </li>`;
+                });
+
+                panelContent.innerHTML = `
+                    <div class="info-block">
+                        <h4>${node.name}</h4>
+                        <span class="category-tag ${categoryTagClass}">${node.category.replace('_', ' ').toUpperCase()}</span>
+                        <span style="font-size:0.7rem;color:#9ca3af;margin-left:6px;">${node.type.toUpperCase()}</span>
+                        <p style="margin-top:10px;">${node.definition}</p>
+                        <p style="font-size:0.7rem;color:#6b7280;margin-top:6px;">Autor(es): <strong>${node.author}</strong></p>
+                    </div>
+                    <div class="info-block">
+                        <h4>Conexiones (${connectedEdges.length})</h4>
+                        <ul class="connection-list">
+                            ${connHTML || '<li style="color:#6b7280;">Sin conexiones registradas</li>'}
+                        </ul>
+                    </div>
+                    <div class="info-block">
+                        <h4>Autores relacionados</h4>
+                        <p>${node.relatedAuthors.map(a => `<span style="color:#cbd5e1;">${a}</span>`).join(', ')}</p>
+                    </div>
+                `;
+            }
+
+            // Node hover
+            nodesGroup.addEventListener('mouseover', (evt) => {
+                const group = evt.target.closest('.node-group');
+                if (!group) return;
+                const nodeId = group.getAttribute('data-node-id');
+                updateTooltip(evt, nodeId);
+            });
+
+            nodesGroup.addEventListener('mousemove', (evt) => {
+                const group = evt.target.closest('.node-group');
+                if (!group) {
+                    tooltipEl.classList.remove('visible');
+                    return;
+                }
+                const nodeId = group.getAttribute('data-node-id');
+                updateTooltip(evt, nodeId);
+            });
+
+            nodesGroup.addEventListener('mouseout', () => {
+                tooltipEl.classList.remove('visible');
+            });
+
+            // Node click
+            nodesGroup.addEventListener('click', (evt) => {
+                const group = evt.target.closest('.node-group');
+                if (!group) return;
+                const nodeId = group.getAttribute('data-node-id');
+                selectedNodeId = nodeId;
+                updateSidePanel(nodeId);
+
+                // Briefly highlight the node
+                const node = nodeMap[nodeId];
+                if (node && group) {
+                    const mainCircle = group.querySelector('[data-role="main-circle"]');
+                    if (mainCircle) {
+                        mainCircle.setAttribute('r', node.r + 6);
+                        mainCircle.setAttribute('stroke', '#ffffff');
+                        mainCircle.setAttribute('stroke-width', '3');
+                        mainCircle.setAttribute('stroke-opacity', '1');
+                        setTimeout(() => {
+                            if (selectedNodeId === nodeId) {
+                                applyPhenomenonState(false);
+                            }
+                        }, 800);
+                    }
+                }
+                evt.stopPropagation();
+            });
+
+            // Background click deselects
+            svgEl.addEventListener('click', (evt) => {
+                if (evt.target === svgEl || evt.target === mainGroup || evt.target === edgesGroup) {
+                    selectedNodeId = null;
+                    updateSidePanel(null);
+                    applyPhenomenonState(false);
+                }
+            });
+
+            // Zoom with scroll
+            canvasContainer.addEventListener('wheel', (evt) => {
+                evt.preventDefault();
+                const zoomSpeed = 0.001;
+                const delta = -evt.deltaY * zoomSpeed;
+                const newZoom = Math.max(0.35, Math.min(2.5, zoomLevel + delta * zoomLevel));
+                const factor = newZoom / zoomLevel;
+                zoomLevel = newZoom;
+
+                // Zoom toward mouse position
+                const rect = canvasContainer.getBoundingClientRect();
+                const mx = evt.clientX - rect.left;
+                const my = evt.clientY - rect.top;
+                panOffset.x = mx - factor * (mx - panOffset.x);
+                panOffset.y = my - factor * (my - panOffset.y);
+
+                updateTransform();
+            }, { passive: false });
+
+            // Pan with mouse drag
+            canvasContainer.addEventListener('mousedown', (evt) => {
+                if (evt.target.closest('.node-group')) return; // Don't pan when clicking nodes
+                isPanning = true;
+                panStart = { x: evt.clientX, y: evt.clientY };
+                panStartOffset = { ...panOffset };
+                canvasContainer.classList.add('panning');
+                evt.preventDefault();
+            });
+
+            window.addEventListener('mousemove', (evt) => {
+                if (!isPanning) return;
+                const dx = evt.clientX - panStart.x;
+                const dy = evt.clientY - panStart.y;
+                panOffset.x = panStartOffset.x + dx;
+                panOffset.y = panStartOffset.y + dy;
+                updateTransform();
+            });
+
+            window.addEventListener('mouseup', () => {
+                if (isPanning) {
+                    isPanning = false;
+                    canvasContainer.classList.remove('panning');
+                }
+            });
+
+            // Touch support for pan/zoom
+            let touchStartDist = 0;
+            let touchStartZoom = 1;
+            let touchStartPan = { x: 0, y: 0 };
+            let touchMidpoint = { x: 0, y: 0 };
+
+            canvasContainer.addEventListener('touchstart', (evt) => {
+                if (evt.touches.length === 1) {
+                    isPanning = true;
+                    panStart = { x: evt.touches[0].clientX, y: evt.touches[0].clientY };
+                    panStartOffset = { ...panOffset };
+                } else if (evt.touches.length === 2) {
+                    isPanning = false;
+                    const dx = evt.touches[0].clientX - evt.touches[1].clientX;
+                    const dy = evt.touches[0].clientY - evt.touches[1].clientY;
+                    touchStartDist = Math.sqrt(dx * dx + dy * dy);
+                    touchStartZoom = zoomLevel;
+                    touchMidpoint = {
+                        x: (evt.touches[0].clientX + evt.touches[1].clientX) / 2,
+                        y: (evt.touches[0].clientY + evt.touches[1].clientY) / 2,
+                    };
+                    touchStartPan = { ...panOffset };
+                }
+            }, { passive: false });
+
+            canvasContainer.addEventListener('touchmove', (evt) => {
+                evt.preventDefault();
+                if (evt.touches.length === 1 && isPanning) {
+                    const dx = evt.touches[0].clientX - panStart.x;
+                    const dy = evt.touches[0].clientY - panStart.y;
+                    panOffset.x = panStartOffset.x + dx;
+                    panOffset.y = panStartOffset.y + dy;
+                    updateTransform();
+                } else if (evt.touches.length === 2) {
+                    const dx = evt.touches[0].clientX - evt.touches[1].clientX;
+                    const dy = evt.touches[0].clientY - evt.touches[1].clientY;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const scale = touchStartDist > 0 ? dist / touchStartDist : 1;
+                    const newZoom = Math.max(0.35, Math.min(2.5, touchStartZoom * scale));
+                    zoomLevel = newZoom;
+                    const rect = canvasContainer.getBoundingClientRect();
+                    const mx = touchMidpoint.x - rect.left;
+                    const my = touchMidpoint.y - rect.top;
+                    const factor = newZoom / touchStartZoom;
+                    panOffset.x = mx - factor * (mx - touchStartPan.x);
+                    panOffset.y = my - factor * (my - touchStartPan.y);
+                    updateTransform();
+                }
+            }, { passive: false });
+
+            canvasContainer.addEventListener('touchend', () => {
+                isPanning = false;
+                touchStartDist = 0;
+            });
+
+            function updateTransform() {
+                mainGroup.setAttribute('transform',
+                    `translate(${panOffset.x}, ${panOffset.y}) scale(${zoomLevel})`);
+            }
+
+            function resetView() {
+                zoomLevel = 1;
+                panOffset = { x: 0, y: 0 };
+                selectedNodeId = null;
+                currentPhenomenon = 'all';
+                phenomenonSelect.value = 'all';
+                updateTransform();
+                applyPhenomenonState(false);
+                updateSidePanel(null);
+                tooltipEl.classList.remove('visible');
+            }
+
+            // ==================== PHENOMENON SELECT ====================
+            phenomenonSelect.addEventListener('change', () => {
+                currentPhenomenon = phenomenonSelect.value;
+                selectedNodeId = null;
+                updateSidePanel(null);
+                applyPhenomenonState(true);
+            });
+
+            // ==================== RESET ====================
+            resetBtn.addEventListener('click', resetView);
+
+            // ==================== INIT ====================
+            function init() {
+                renderAll();
+                updateTransform();
+                updateSidePanel(null);
+            }
+
+            init();
+
+            // ==================== KEYBOARD SHORTCUTS ====================
+            window.addEventListener('keydown', (evt) => {
+                switch (evt.key.toLowerCase()) {
+                    case 'r':
+                        if (!evt.ctrlKey && !evt.metaKey) {
+                            resetView();
+                        }
+                        break;
+                    case '0':
+                        if (!evt.ctrlKey && !evt.metaKey) {
+                            phenomenonSelect.value = 'all';
+                            currentPhenomenon = 'all';
+                            selectedNodeId = null;
+                            updateSidePanel(null);
+                            applyPhenomenonState(false);
+                        }
+                        break;
+                    case 'escape':
+                        selectedNodeId = null;
+                        updateSidePanel(null);
+                        applyPhenomenonState(false);
+                        break;
+                }
+            });
+
+            console.log('🧠 Red Neuronal de Psicología Social lista.');
+            console.log('   Selecciona un fenómeno en el menú para ver la activación.');
+            console.log('   Haz clic en nodos para explorar. Usa scroll para zoom. Arrastra para mover.');
+            console.log('   Teclas: R = reset, 0 = mostrar todo, ESC = deseleccionar.');
+        })();
+    </script>
+</body>
+</html>
